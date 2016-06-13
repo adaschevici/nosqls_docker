@@ -4,7 +4,7 @@ MAINTAINER Zero zero@localhost.com
 #COMMENT { "description": "mongodb service container", \ 
 #          "usage": "docker run -d -p 27017:27017 --name mongodb mlamouri/mongodb --volume=/mydbdatadir:/var/lib/mongodb" }
 
-RUN  dnf install -y mongodb-server && yum clean all
+RUN  dnf install -y mongodb-server && dnf clean all
 
 RUN  mkdir -p /var/lib/mongodb && \
      touch /var/lib/mongodb/.keep && \
