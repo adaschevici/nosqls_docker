@@ -6,18 +6,28 @@ MAINTAINER Zero zero@localhost.com
 
 RUN  dnf install -y mongodb-server && dnf clean all
 
-RUN  mkdir -p /var/lib/mongodb && \
-     touch /var/lib/mongodb/.keep && \
-     chown -R mongodb:mongodb /var/lib/mongodb
+# RUN  mkdir -p /data && \
+#      touch /var/lib/mongodb/.keep && \
+#      chown -R mongodb:mongodb /var/lib/mongodb
 
 ADD mongodb.conf /etc/mongodb.conf
 
-VOLUME [ "/var/lib/mongodb" ]
+# VOLUME [ "/var/lib/mongodb" ]
 
 EXPOSE 27017
 
+RUN mkdir /data
+RUN mkdir /data/mongodb
+RUN mkdir /data/logs
+
+RUN chown mongodb /data
+RUN chown mongodb /data/mongodb
+RUN chown mongodb /data/logs
+
+
 USER mongodb
-WORKDIR /var/lib/mongodb
+
+
+WORKDIR /data/mongodb
 
 ENTRYPOINT ["/usr/bin/mongod", "--config", "/etc/mongodb.conf"]
-CMD ["--quiet"]
