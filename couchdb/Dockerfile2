@@ -1,0 +1,37 @@
+FROM fedora:23
+MAINTAINER Zero zero@localhost.com
+
+# RUN sed -i'' 's/deltarpm=1/deltarpm=0/' /etc/dnf/dnf.conf
+# RUN echo "deltarpm=0" >> /etc/dnf/dnf.conf
+RUN dnf -y --setopt=deltarpm=false update
+RUN dnf install -y --setopt=deltarpm=false autoconf
+RUN dnf install -y --setopt=deltarpm=false autoconf-archive
+RUN dnf install -y --setopt=deltarpm=false automake
+RUN dnf install -y --setopt=deltarpm=false curl-devel
+RUN dnf install -y --setopt=deltarpm=false erlang-asn1
+RUN dnf install -y --setopt=deltarpm=false erlang-erts
+RUN dnf install -y --setopt=deltarpm=false erlang-eunit
+RUN dnf install -y --setopt=deltarpm=false erlang-os_mon
+RUN dnf install -y --setopt=deltarpm=false erlang-xmerl
+RUN dnf install -y --setopt=deltarpm=false help2man
+RUN dnf install -y --setopt=deltarpm=false js-devel
+RUN dnf install -y --setopt=deltarpm=false libicu-devel
+RUN dnf install -y --setopt=deltarpm=false libtool
+RUN dnf install -y --setopt=deltarpm=false perl-Test-Harness
+RUN dnf install -y --setopt=deltarpm=false haproxy openssl-devel
+RUN dnf install -y --setopt=deltarpm=false git
+# RUN dnf groupinstall -y --setopt=deltarpm=false "Development Tools and Libraries"
+RUN dnf install -y --setopt=deltarpm=false make automake gcc gcc-c++ kernel-devel
+RUN dnf install -y --setopt=deltarpm=false libmozjs185-devel
+RUN dnf install -y --setopt=deltarpm=false libicu-devel
+
+RUN cd /usr/src &&  git clone https://github.com/apache/couchdb && \
+    cd /usr/src/couchdb && \
+    ./configure && make couch
+# RUN make
+
+RUN groupadd -r couchdb && useradd -d /usr/src/couchdb -g couchdb couchdb
+
+# permissions
+RUN chmod +x /usr/src/couchdb/dev/run && chown -R couchdb:couchdb /usr/src/couchdb
+
