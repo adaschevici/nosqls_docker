@@ -36,10 +36,12 @@ RUN wget -N $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
 
 # Add runit script for couchbase-server
 COPY scripts/run /etc/service/couchbase-server/run
+RUN chmod 755 /etc/service/couchbase-server/run
 
 # Add dummy script for commands invoked by cbcollect_info that
 # make no sense in a Docker container
 COPY scripts/dummy.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/dummy.sh
 RUN ln -s dummy.sh /usr/local/bin/iptables-save && \
     ln -s dummy.sh /usr/local/bin/lvdisplay && \
     ln -s dummy.sh /usr/local/bin/vgdisplay && \
@@ -50,6 +52,9 @@ RUN chrpath -r '$ORIGIN/../lib' /opt/couchbase/bin/curl
 
 # Add bootstrap script
 COPY scripts/entrypoint.sh /
+RUN chmod 755 /entrypoint.sh
+RUN ls -la
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["couchbase-server"]
 
@@ -64,4 +69,4 @@ CMD ["couchbase-server"]
 # 18092: Views, query, XDCR (SSL)
 # 18093: Query services (SSL) (4.0+)
 EXPOSE 8091 8092 8093 8094 11207 11210 11211 18091 18092 18093
-VOLUME /opt/couchbase/var
+# VOLUME /opt/couchbase/var
