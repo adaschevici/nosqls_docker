@@ -68,5 +68,6 @@ CMD ["couchbase-server"]
 # 18091: Couchbase Web console, REST/HTTP interface (SSL)
 # 18092: Views, query, XDCR (SSL)
 # 18093: Query services (SSL) (4.0+)
+#RUN mkdir /Users/zero/couchbase_volume
 EXPOSE 8091 8092 8093 8094 11207 11210 11211 18091 18092 18093
-# VOLUME /opt/couchbase/var
+# VOLUME /Users/zero/couchbase_volume:/opt/couchbase/var/lib/couchbase/data
